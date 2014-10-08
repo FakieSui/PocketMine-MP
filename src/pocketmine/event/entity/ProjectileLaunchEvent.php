@@ -28,10 +28,10 @@ class ProjectileLaunchEvent extends EntityEvent implements Cancellable{
 	public static $handlerList = null;
 
 	/**
-	 * @param Projectile $item
+	 * @param Projectile $entity
 	 */
-	public function __construct(Projectile $item){
-		$this->entity = $item;
+	public function __construct(Projectile $entity){
+		$this->entity = $entity;
 
 	}
 
