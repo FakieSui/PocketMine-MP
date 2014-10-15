@@ -34,7 +34,7 @@ abstract class BlockEvent extends Event{
 	/**
 	 * @param Block $block
 	 */
-	protected function __construct(Block $block){
+	public function __construct(Block $block){
 		$this->block = $block;
 	}
 
