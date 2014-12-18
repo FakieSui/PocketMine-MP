@@ -92,16 +92,16 @@ class Chunk extends BaseFullChunk{
 	}
 
 	public function getBlockId($x, $y, $z){
-		return ord($this->blocks{($x << 11) + ($z << 7) + $y});
+		return ord($this->blocks{($x << 11) | ($z << 7) | $y});
 	}
 
 	public function setBlockId($x, $y, $z, $id){
-		$this->blocks{($x << 11) + ($z << 7) + $y} = chr($id);
+		$this->blocks{($x << 11) | ($z << 7) | $y} = chr($id);
 		$this->hasChanged = true;
 	}
 
 	public function getBlockData($x, $y, $z){
-		$m = ord($this->data{($x << 10) + ($z << 6) + ($y >> 1)});
+		$m = ord($this->data{($x << 10) | ($z << 6) | ($y >> 1)});
 		if(($y & 1) === 0){
 			return $m & 0x0F;
 		}else{
@@ -110,7 +110,7 @@ class Chunk extends BaseFullChunk{
 	}
 
 	public function setBlockData($x, $y, $z, $data){
-		$i = ($x << 10) + ($z << 6) + ($y >> 1);
+		$i = ($x << 10) | ($z << 6) | ($y >> 1);
 		$old_m = ord($this->data{$i});
 		if(($y & 1) === 0){
 			$this->data{$i} = chr(($old_m & 0xf0) | ($data & 0x0f));
@@ -121,7 +121,7 @@ class Chunk extends BaseFullChunk{
 	}
 
 	public function getFullBlock($x, $y, $z){
-		$i = ($x << 11) + ($z << 7) + $y;
+		$i = ($x << 11) | ($z << 7) | $y;
 		if(($y & 1) === 0){
 			return (ord($this->blocks{$i}) << 4) | (ord($this->data{$i >> 1}) & 0x0F);
 		}else{
@@ -136,7 +136,7 @@ class Chunk extends BaseFullChunk{
 	}
 
 	public function setBlock($x, $y, $z, $blockId = null, $meta = null){
-		$i = ($x << 11) + ($z << 7) + $y;
+		$i = ($x << 11) | ($z << 7) | $y;
 
 		$changed = false;
 
@@ -172,7 +172,7 @@ class Chunk extends BaseFullChunk{
 	}
 
 	public function getBlockSkyLight($x, $y, $z){
-		$sl = ord($this->skyLight{($x << 10) + ($z << 6) + ($y >> 1)});
+		$sl = ord($this->skyLight{($x << 10) | ($z << 6) | ($y >> 1)});
 		if(($y & 1) === 0){
 			return $sl & 0x0F;
 		}else{
@@ -181,7 +181,7 @@ class Chunk extends BaseFullChunk{
 	}
 
 	public function setBlockSkyLight($x, $y, $z, $level){
-		$i = ($x << 10) + ($z << 6) + ($y >> 1);
+		$i = ($x << 10) | ($z << 6) | ($y >> 1);
 		$old_sl = ord($this->skyLight{$i});
 		if(($y & 1) === 0){
 			$this->skyLight{$i} = chr(($old_sl & 0xf0) | ($level & 0x0f));
@@ -192,7 +192,7 @@ class Chunk extends BaseFullChunk{
 	}
 
 	public function getBlockLight($x, $y, $z){
-		$l = ord($this->blockLight{($x << 10) + ($z << 6) + ($y >> 1)});
+		$l = ord($this->blockLight{($x << 10) | ($z << 6) | ($y >> 1)});
 		if(($y & 1) === 0){
 			return $l & 0x0F;
 		}else{
@@ -201,7 +201,7 @@ class Chunk extends BaseFullChunk{
 	}
 
 	public function setBlockLight($x, $y, $z, $level){
-		$i = ($x << 10) + ($z << 6) + ($y >> 1);
+		$i = ($x << 10) | ($z << 6) | ($y >> 1);
 		$old_l = ord($this->blockLight{$i});
 		if(($y & 1) === 0){
 			$this->blockLight{$i} = chr(($old_l & 0xf0) | ($level & 0x0f));
