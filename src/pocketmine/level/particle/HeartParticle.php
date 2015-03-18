@@ -21,43 +21,10 @@
 
 namespace pocketmine\level\particle;
 
-use pocketmine\entity\Entity;
-use pocketmine\entity\Wolf;
 use pocketmine\math\Vector3;
-use pocketmine\network\protocol\AddMobPacket;
-use pocketmine\network\protocol\EntityEventPacket;
-use pocketmine\network\protocol\RemoveEntityPacket;
 
-class HeartParticle extends Particle{
-	//TODO: HACK!
-	//TODO: needs more testing!
-
-	public function __construct(Vector3 $pos){
-		parent::__construct($pos->x, $pos->y, $pos->z);
-	}
-	
-	public function encode(){
-		$entityId = bcadd("1095216660480", mt_rand(0, 0x7fffffff)); //No conflict with other things
-		$pk = new AddMobPacket();
-		$pk->eid = $entityId;
-		$pk->type = Wolf::NETWORK_ID;
-		$pk->x = $this->x;
-		$pk->y = $this->y - 1;
-		$pk->z = $this->z;
-		$pk->pitch = 0;
-		$pk->yaw = 0;
-		$pk->metadata = [
-			Entity::DATA_FLAGS => [Entity::DATA_TYPE_BYTE, 1 << Entity::DATA_FLAG_INVISIBLE],
-			Entity::DATA_AIR => [Entity::DATA_TYPE_SHORT, 300]
-		];
-
-		$pk2 = new EntityEventPacket();
-		$pk2->eid = $entityId;
-		$pk2->event = 7;
-
-		$pk3 = new RemoveEntityPacket();
-		$pk3->eid = $entityId;
-		
-		return [$pk, $pk2, $pk3];
+class HeartParticle extends GenericParticle{
+	public function __construct(Vector3 $pos, $scale = 0){
+		parent::__construct($pos->x, $pos->y, $pos->z, 14, $scale);
 	}
 }
