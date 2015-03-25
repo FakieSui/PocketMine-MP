@@ -44,6 +44,7 @@ class FullChunkDataPacket extends DataPacket{
 		$this->reset();
         $this->putInt($this->chunkX);
         $this->putInt($this->chunkZ);
+		$this->putInt(strlen($this->data));
 		$this->put($this->data);
 	}
 
